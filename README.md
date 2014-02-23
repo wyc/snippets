@@ -1,2 +1,2 @@
-interview-questions
+snippets
 ===================
