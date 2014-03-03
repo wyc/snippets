@@ -1,1 +1,5 @@
 qsort implemented in 3 lines of shell, with tests.
+
+qsort.sh - implementation
+qsortv.sh - verbose implementation
+qsort_test.sh - test
