@@ -14,7 +14,7 @@ func Badness(wordLengths []int, lineLength int) int {
 	sum := Sum(wordLengths)
 	var rv int = 0
 	if sum > lineLength {
-		rv = lineLength * 10000
+		rv = 10000 * (sum - lineLength)
 	} else {
 		t := lineLength - sum
 		rv = t * t * t
@@ -23,9 +23,19 @@ func Badness(wordLengths []int, lineLength int) int {
 	return rv
 }
 
+type BadnessInput struct {
+	wordLengths *[]int
+	lineLength  int
+}
+
+var badnessMemo map[BadnessInput]int
+
 func MinBadness(wordLengths []int, lineLength int) int {
+	bi := BadnessInput{&wordLengths, lineLength}
 	if len(wordLengths) == 0 {
 		return 0
+	} else if _, ok := badnessMemo[bi]; ok {
+		return badnessMemo[bi]
 	}
 
 	var minBadness int = -1
@@ -37,9 +47,11 @@ func MinBadness(wordLengths []int, lineLength int) int {
 			minBadness = badness
 		}
 	}
+	badnessMemo[bi] = minBadness
 	return minBadness
 }
 
 func main() {
-	fmt.Println(MinBadness([]int{9, 1, 1, 2, 3, 4, 4, 6}, 10))
+	badnessMemo = make(map[BadnessInput]int)
+	fmt.Println(MinBadness([]int{9, 1, 1, 2, 3, 4, 4, 6, 5, 3, 6, 4}, 10))
 }
