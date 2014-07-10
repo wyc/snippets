@@ -1,0 +1,45 @@
+NB. Sum: add up 1 2 3 4 5
++/ 1 2 3 4 5
+NB. Vector Magnitude: find the magnitude of the 3D vector <5, 8, 9> (uses
+bonding[0])
+%:+/^&2 ] 5 8 9
+NB. Vector Normalization: normalize the 4D vector <5, 5, 5, 8> (uses a
+hook[0])
+(%+/) 5 5 5 8
+NB. Taxes: 5% tax on 100 (uses a hook and bonding)
+(+*&0.05) 100
+NB. Arithmetic Mean: mean of 50, 100, 150, 200, and 8 (uses a fork[0])
+(+/%#) 50 100 150 200 8
+NB. 1D Convolution: convolve [0 1 0 0 1 0 0 1 0] with kernel [0.25 0.5 0.25]
+(" is the rank operator....a bit more advanced than we were able to get to[1].
+read up on convolution and edge filters if you want to learn more about the
+math[2].)
++/0.25 0.5 0.25 * _1 0 1 |."(0 _) 0 1 0 0 1 0 0 1 0
+NB. FizzBuzz:
+FB=:((0 i.~15 3 5|]){::'FizzBuzz';'Fizz';'Buzz';": )"0
+FB >:i.100
+J Vocabulary:
+http://www.jsoftware.com/help/dictionary/vocabul.htm
+An important concept I forgot to mention during the talk:
+As programming languages evolve, we use fewer variables. Compare assembler to
+C, and then C to Python. These tools become more powerful because they allow
+us to be less concerned with the implementation details and more so with
+expression of algorithms and their semantic meanings. Consider doubling a
+list's members without the use of libraries:
+C:
+int i, a[] = {1, 2, 3, 4 ,5};
+for (i = 0; i < 5; i++) {
+a[i] = a[i] * 2;
+}
+Python:
+list(map(lambda x: x * 2, [1, 2, 3, 4, 5]))
+J:
++: 1 2 3 4 5
+Because J is array-based (think matlab, octave, or R), you can go as many as
+128 dimensions without changing the code.
+Happy hacking!
+- Wayne
+[0] http://www.jsoftware.com/help/learning/03.htm
+[1] http://www.jsoftware.com/help/learning/07.htm
+[2]
+http://www.cs.cornell.edu/courses/CS1114/2013sp/sections/S06_convolution.pdf
