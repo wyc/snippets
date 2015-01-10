@@ -40,65 +40,31 @@ func (u User) GetEmployee() (*Employee, error) {
 	return &Employee{Title: "Paper Pusher", Salary: 100000.00}, nil
 }
 
-type managerHandler func(http.ResponseWriter, *http.Request, Manager) error
-
-func (mh managerHandler) ServeHTTP(w http.ResponseWriter, r *http.Request) {
-	user, err := RequestToUser(r)
-	if err != nil {
-		http.Error(w, err.Error(), http.StatusUnauthorized)
-		return
-	}
-
-	manager, err := user.GetManager()
-	if err != nil {
-		http.Error(w, err.Error(), http.StatusUnauthorized)
-		return
-	}
-	mh(w, r, *manager)
-}
-
 func ManagerInfo(w http.ResponseWriter, r *http.Request, m Manager) (err error) {
 	_, err = w.Write([]byte(fmt.Sprintf("Can Hire: %v\nCan Fire: %v", m.CanHire, m.CanFire)))
 	return err
 }
 
-type employeeHandler func(http.ResponseWriter, *http.Request, Employee) error
-
-func (eh employeeHandler) ServeHTTP(w http.ResponseWriter, r *http.Request) {
-	user, err := RequestToUser(r)
-	if err != nil {
-		http.Error(w, err.Error(), http.StatusUnauthorized)
-		return
-	}
-
-	employee, err := user.GetEmployee()
-	if err != nil {
-		http.Error(w, err.Error(), http.StatusUnauthorized)
-		return
-	}
-	eh(w, r, *employee)
-}
 func EmployeeInfo(w http.ResponseWriter, r *http.Request, e Employee) (err error) {
 	_, err = w.Write([]byte(fmt.Sprintf("Title: %v\nSalary: $%0.2f", e.Title, e.Salary)))
 	return err
 }
 
-type userHandler func(http.ResponseWriter, *http.Request, User) error
-
-func (uh userHandler) ServeHTTP(w http.ResponseWriter, r *http.Request) {
-	user, err := RequestToUser(r)
-	if err != nil {
-		http.Error(w, err.Error(), http.StatusUnauthorized)
-		return
-	}
-	uh(w, r, *user)
-}
 func UserInfo(w http.ResponseWriter, r *http.Request, u User) (err error) {
 	_, err = w.Write([]byte(fmt.Sprintf("Email: %v", u.Email)))
 	return err
 }
 
 func main() {
+	// AddIdentityResolverHTTP(User{}, RequestToUser)
+
+	// AddRoleResolver(User.GetManager)
+	// AddRoleResolver(User.GetEmployee)
+
+	// http.Handle("/manager", AuthedHTTP(ManagerInfo))
+	// http.Handle("/employee", AuthedHTTP(EmployeeInfo))
+	// http.Handle("/user", AuthedHTTP(UserInfo))
+
 	http.Handle("/manager", managerHandler(ManagerInfo))
 	http.Handle("/employee", employeeHandler(EmployeeInfo))
 	http.Handle("/user", userHandler(UserInfo))
