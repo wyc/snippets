@@ -88,3 +88,25 @@ medianOfSorted xs
     mid = len `div` 2
     prev:next:_ = drop (mid - 1) xs
 
+-- | The 'myTakeWhile' function takes elements from a list as long as the
+-- predicate is true
+-- >>> myTakeWhile (<10) [1..]
+-- [1,2,3,4,5,6,7,8,9]
+myTakeWhile _ [] = []
+myTakeWhile p (x:xs) = if p x then x:myTakeWhile p xs else []
+
+-- | The 'myMap' function applies function f over all elements of the given list
+-- >>> myMap (+1) [1,2,3]
+-- [2,3,4]
+myMap _ [] = []
+myMap f (x:xs) = f x : myMap f xs
+
+-- | The 'myFilter' function returns all elements matching the given predicate
+-- >>> myFilter (>0) [-1,0,1,2]
+-- [1,2]
+myFilter _ [] = []
+myFilter p (x:xs)
+  | p x         = x : myFilter p xs
+  | otherwise   = myFilter p xs
+
+myFilter2 f xs = [x | x <- xs, f x]
